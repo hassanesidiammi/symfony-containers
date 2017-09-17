@@ -1,0 +1,26 @@
+web:
+    image: hassanesidiammi/php:5.6-apache-xdebug
+    #build: config/site
+    container_name: apache2
+    ports:
+      - "9001:9001"
+
+    volumes:
+      - ./www:/var/www
+      - ./www/symfony:/var/www/symfony
+      - ./config/php.ini:/usr/local/etc/php/conf.d/custom.ini
+      - ./config/apache2-sites-enabled:/etc/apache2/sites-enabled
+      - ./config/apache2-ports.conf:/etc/apache2/ports.conf
+
+    links:
+      - db:db
+
+db:
+  image: mysql
+  container_name: db
+
+  volumes:
+    - /data/mysql:/var/lib/mysql
+
+  environment:
+    - MYSQL_ROOT_PASSWORD=root
